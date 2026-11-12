@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-Football Top Scorers</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2235;
+            --bg-card-hover: #1f2a40;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-pink: #ec4899;
+            --accent-cyan: #06b6d4;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #2a3550;
+            --gold: #fbbf24;
+            --silver: #9ca3af;
+            --bronze: #d97706;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 30px 0 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3); }
+            50% { box-shadow: 0 8px 40px rgba(59, 130, 246, 0.5); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f1f5f9, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px 0;
+            margin: 20px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 2px;
+        }
+
+        /* Search & Filters */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 25px 0;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .sort-select {
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .sort-select:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .sort-select option {
+            background: var(--bg-secondary);
+        }
+
+        /* Sport Tabs */
+        .sport-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 10px 0 20px;
+            scrollbar-width: none;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .sport-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sport-tab {
+            padding: 10px 22px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sport-tab:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+        }
+
+        .sport-tab.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .sport-tab .emoji {
+            font-size: 1.1rem;
+        }
+
+        /* Table */
+        .table-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .table-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-title .sport-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .results-count {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        thead th:hover {
+            color: var(--text-primary);
+        }
+
+        thead th.sorted {
+            color: var(--accent-blue);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(42, 53, 80, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody td {
+            padding: 16px 20px;
+            font-size: 0.92rem;
+        }
+
+        .rank-cell {
+            width: 60px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+        .rank-1 {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+        }
+
+        .rank-2 {
+            background: linear-gradient(135deg, #9ca3af, #6b7280);
+            color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(156, 163, 175, 0.3);
+        }
+
+        .rank-3 {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+        }
+
+        .rank-other {
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+        }
+
+        .player-cell {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .player-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .player-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .player-team {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .sport-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sport-icon-small {
+            font-size: 1.2rem;
+        }
+
+        .sport-name {
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .country-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .flag {
+            font-size: 1.3rem;
+        }
+
+        .country-name {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .points-cell {
+            font-weight: 800;
+            font-size: 1.15rem;
+        }
+
+        .points-highlight {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .games-cell {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .avg-cell {
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        .career-cell {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .trend-up {
+            color: var(--accent-green);
+        }
+
+        .trend-down {
+            color: var(--accent-red);
+        }
+
+        /* Player Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            max-width: 550px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 30px 30px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .modal-player-info {
+            flex: 1;
+        }
+
+        .modal-player-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .modal-player-details {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-stat {
+            padding: 20px;
+            text-align: center;
+            border-right: 1px solid var(--border);
+        }
+
+        .modal-stat:last-child {
+            border-right: none;
+        }
+
+        .modal-stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+        }
+
+        .modal-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .modal-body {
+            padding: 25px 30px 30px;
+        }
+
+        .modal-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(42, 53, 80, 0.5);
+        }
+
+        .modal-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .modal-info-label {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .modal-info-value {
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0 40px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            h1 { font-size: 1.8rem; }
+            .stats-bar { gap: 25px; }
+            .stat-number { font-size: 1.4rem; }
+            
+            .hide-mobile {
+                display: none;
+            }
+
+            tbody td, thead th {
+                padding: 12px 14px;
+            }
+
+            .player-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 0.95rem;
+                border-radius: 10px;
+            }
+
+            .modal {
+                margin: 10px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .search-box { max-width: 100%; min-width: auto; }
+            .table-header-bar { flex-direction: column; gap: 8px; align-items: flex-start; }
+            .sport-tabs { justify-content: flex-start; }
+            .stats-bar { gap: 15px; }
+
+            .modal-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .modal-stat {
+                padding: 15px 10px;
+            }
+
+            .modal-stat-value {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .no-results .emoji-big {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .no-results p {
+            font-size: 1.1rem;
+        }
+
+        /* Row entrance animation */
+        tbody tr {
+            animation: rowIn 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes rowIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo-section">
+            <div class="logo-icon">🏆</div>
+            <h1>Non-Football Top Scorers</h1>
+        </div>
+        <p class="subtitle">All-time greatest scorers across basketball, hockey, handball, rugby & more</p>
+    </header>
+
+    <div class="stats-bar" id="statsBar">
+        <div class="stat-item">
+            <div class="stat-number" id="totalPlayers">0</div>
+            <div class="stat-label">Athletes</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="totalSports">0</div>
+            <div class="stat-label">Sports</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="totalPoints">0</div>
+            <div class="stat-label">Total Points</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="totalCountries">0</div>
+            <div class="stat-label">Countries</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Zoek speler, team of land...">
+        </div>
+        <select class="sort-select" id="sortSelect">
+            <option value="points-desc">Meeste punten</option>
+            <option value="points-asc">Minste punten</option>
+            <option value="name-asc">Naam A-Z</option>
+            <option value="name-desc">Naam Z-A</option>
+            <option value="avg-desc">Hoogste gemiddelde</option>
+            <option value="games-desc">Meeste wedstrijden</option>
+        </select>
+    </div>
+
+    <div class="sport-tabs" id="sportTabs">
+        <!-- Dynamically generated -->
+    </div>
+
+    <div class="table-container">
+        <div class="table-header-bar">
+            <div class="table-title">
+                🏅 <span id="tableTitle">Alle Sporten</span>
+            </div>
+            <div class="results-count" id="resultsCount">0 spelers</div>
+        </div>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 60px; text-align: center;">#</th>
+                        <th>Speler</th>
+                        <th>Sport</th>
+                        <th class="hide-mobile">Land</th>
+                        <th>Punten</th>
+                        <th class="hide-mobile">Wedstrijden</th>
+                        <th class="hide-mobile">Gem.</th>
+                        <th class="hide-mobile">Carrière</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Dynamically generated -->
+                </tbody>
+            </table>
+        </div>
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="emoji-big">🤷</div>
+            <p>Geen spelers gevonden</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Non-Football Top Scorers — Data gebaseerd op historische statistieken</p>
+    </footer>
+</div>
+
+<!-- Player Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-avatar" id="modalAvatar">W</div>
+            <div class="modal-player-info">
+                <div class="modal-player-name" id="modalName">-</div>
+                <div class="modal-player-details" id="modalDetails">-</div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-stats">
+            <div class="modal-stat">
+                <div class="modal-stat-value" id="modalPoints">-</div>
+                <div class="modal-stat-label">Punten</div>
+            </div>
+            <div class="modal-stat">
+                <div class="modal-stat-value" id="modalGames">-</div>
+                <div class="modal-stat-label">Wedstrijden</div>
+            </div>
+            <div class="modal-stat">
+                <div class="modal-stat-value" id="modalAvg">-</div>
+                <div class="modal-stat-label">Gemiddelde</div>
+            </div>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <!-- Dynamically filled -->
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== DATA =====
+const players = [
+    // BASKETBALL (NBA)
+    {
+        name: "LeBron James",
+        team: "LA Lakers",
+        sport: "Basketball",
+        sportEmoji: "🏀",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 40474,
+        games: 1492,
+        career: "2003-heden",
+        achievement: "NBA All-Time Leading Scorer",
+        color: "#552583"
+    },
+    {
+        name: "Kareem Abdul-Jabbar",
+        team: "LA Lakers / Bucks",
+        sport: "Basketball",
+        sportEmoji: "🏀",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 38387,
+        games: 1560,
+        career: "1969-1989",
+        achievement: "6x NBA Champion, 6x MVP",
+        color: "#552583"
+    },
+    {
+        name: "Karl Malone",
+        team: "Utah Jazz",
+        sport: "Basketball",
+        sportEmoji: "🏀",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 36928,
+        games: 1476,
+        career: "1985-2004",
+        achievement: "2x NBA MVP",
+        color: "#002B5C"
+    },
+    {
+        name: "Kobe Bryant",
+        team: "LA Lakers",
+        sport: "Basketball",
+        sportEmoji: "🏀",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 33643,
+        games: 1346,
+        career: "1996-2016",
+        achievement: "5x NBA Champion",
+        color: "#552583"
+    },
+    {
+        name: "Michael Jordan",
+        team: "Chicago Bulls",
+        sport: "Basketball",
+        sportEmoji: "🏀",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 32292,
+        games: 1072,
+        career: "1984-2003",
+        achievement: "6x NBA Champion, 5x MVP",
+        color: "#CE1141"
+    },
+    {
+        name: "Kevin Durant",
+        team: "Phoenix Suns",
+        sport: "Basketball",
+        sportEmoji: "🏀",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 28735,
+        games: 1064,
+        career: "2007-heden",
+        achievement: "2x NBA Champion, MVP",
+        color: "#1D1160"
+    },
+    {
+        name: "Stephen Curry",
+        team: "Golden State Warriors",
+        sport: "Basketball",
+        sportEmoji: "🏀",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 23666,
+        games: 956,
+        career: "2009-heden",
+        achievement: "4x NBA Champion, 2x MVP",
+        color: "#1D428A"
+    },
+
+    // ICE HOCKEY (NHL)
+    {
+        name: "Wayne Gretzky",
+        team: "Edmonton Oilers / Rangers",
+        sport: "IJshockey",
+        sportEmoji: "🏒",
+        country: "Canada",
+        flag: "🇨🇦",
+        points: 2857,
+        games: 1487,
+        career: "1979-1999",
+        achievement: "4x Stanley Cup, 9x Hart Trophy",
+        color: "#041E42"
+    },
+    {
+        name: "Jaromír Jágr",
+        team: "Pittsburgh Penguins",
+        sport: "IJshockey",
+        sportEmoji: "🏒",
+        country: "Tsjechië",
+        flag: "🇨🇿",
+        points: 1921,
+        games: 1733,
+        career: "1990-2018",
+        achievement: "2x Stanley Cup Champion",
+        color: "#FCB514"
+    },
+    {
+        name: "Mark Messier",
+        team: "Edmonton Oilers / Rangers",
+        sport: "IJshockey",
+        sportEmoji: "🏒",
+        country: "Canada",
+        flag: "🇨🇦",
+        points: 1887,
+        games: 1756,
+        career: "1979-2004",
+        achievement: "6x Stanley Cup Champion",
+        color: "#0038A8"
+    },
+    {
+        name: "Gordie Howe",
+        team: "Detroit Red Wings",
+        sport: "IJshockey",
+        sportEmoji: "🏒",
+        country: "Canada",
+        flag: "🇨🇦",
+        points: 1850,
+        games: 1767,
+        career: "1946-1980",
+        achievement: "Mr. Hockey, 4x Stanley Cup",
+        color: "#CE1126"
+    },
+    {
+        name: "Alexander Ovechkin",
+        team: "Washington Capitals",
+        sport: "IJshockey",
+        sportEmoji: "🏒",
+        country: "Rusland",
+        flag: "🇷🇺",
+        points: 1559,
+        games: 1426,
+        career: "2005-heden",
+        achievement: "Stanley Cup Champion, 3x Hart Trophy",
+        color: "#C8102E"
+    },
+    {
+        name: "Sidney Crosby",
+        team: "Pittsburgh Penguins",
+        sport: "IJshockey",
+        sportEmoji: "🏒",
+        country: "Canada",
+        flag: "🇨🇦",
+        points: 1409,
+        games: 1272,
+        career: "2005-heden",
+        achievement: "3x Stanley Cup, 2x Hart Trophy",
+        color: "#FCB514"
+    },
+
+    // RUGBY
+    {
+        name: "Dan Carter",
+        team: "New Zealand All Blacks",
+        sport: "Rugby",
+        sportEmoji: "🏉",
+        country: "Nieuw-Zeeland",
+        flag: "🇳🇿",
+        points: 1598,
+        games: 112,
+        career: "2003-2015",
+        achievement: "2x Rugby World Cup Winner",
+        color: "#000000"
+    },
+    {
+        name: "Jonny Wilkinson",
+        team: "England",
+        sport: "Rugby",
+        sportEmoji: "🏉",
+        country: "Engeland",
+        flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+        points: 1246,
+        games: 97,
+        career: "1998-2011",
+        achievement: "Rugby World Cup Winner 2003",
+        color: "#E4003B"
+    },
+    {
+        name: "Handré Pollard",
+        team: "South Africa",
+        sport: "Rugby",
+        sportEmoji: "🏉",
+        country: "Zuid-Afrika",
+        flag: "🇿🇦",
+        points: 742,
+        games: 72,
+        career: "2014-heden",
+        achievement: "2x Rugby World Cup Winner",
+        color: "#007749"
+    },
+    {
+        name: "Ronan O'Gara",
+        team: "Ireland",
+        sport: "Rugby",
+        sportEmoji: "🏉",
+        country: "Ierland",
+        flag: "🇮🇪",
+        points: 1083,
+        games: 130,
+        career: "2000-2013",
+        achievement: "Grand Slam Winner 2009",
+        color: "#169B62"
+    },
+
+    // HANDBALL
+    {
+        name: "Mikkel Hansen",
+        team: "Denemarken / PSG",
+        sport: "Handbal",
+        sportEmoji: "🤾",
+        country: "Denemarken",
+        flag: "🇩🇰",
+        points: 1840,
+        games: 331,
+        career: "2007-2023",
+        achievement: "3x World Champion, Olympic Gold",
+        color: "#C8102E"
+    },
+    {
+        name: "Nikola Karabatić",
+        team: "Frankrijk / PSG",
+        sport: "Handbal",
+        sportEmoji: "🤾",
+        country: "Frankrijk",
+        flag: "🇫🇷",
+        points: 1766,
+        games: 346,
+        career: "2002-2024",
+        achievement: "4x World Champion, 2x Olympic Gold",
+        color: "#002395"
+    },
+    {
+        name: "Ivano Balić",
+        team: "Kroatië",
+        sport: "Handbal",
+        sportEmoji: "🤾",
+        country: "Kroatië",
+        flag: "🇭🇷",
+        points: 1094,
+        games: 194,
+        career: "1998-2012",
+        achievement: "IHF World Player of the Year",
+        color: "#171796"
+    },
+    {
+        name: "Cristina Neagu",
+        team: "Roemenië / CSM Boekarest",
+        sport: "Handbal",
+        sportEmoji: "🤾",
+        country: "Roemenië",
+        flag: "🇷🇴",
+        points: 1160,
+        games: 222,
+        career: "2008-heden",
+        achievement: "4x IHF World Player of the Year",
+        color: "#002B7F"
+    },
+
+    // CRICKET
+    {
+        name: "Sachin Tendulkar",
+        team: "India",
+        sport: "Cricket",
+        sportEmoji: "🏏",
+        country: "India",
+        flag: "🇮🇳",
+        points: 34357,
+        games: 664,
+        career: "1989-2013",
+        achievement: "World Cup Winner, 100 Centuries",
+        color: "#FF9933"
+    },
+    {
+        name: "Ricky Ponting",
+        team: "Australië",
+        sport: "Cricket",
+        sportEmoji: "🏏",
+        country: "Australië",
+        flag: "🇦🇺",
+        points: 27483,
+        games: 560,
+        career: "1995-2012",
+        achievement: "3x World Cup Winner, Captain",
+        color: "#00843D"
+    },
+    {
+        name: "Virat Kohli",
+        team: "India",
+        sport: "Cricket",
+        sportEmoji: "🏏",
+        country: "India",
+        flag: "🇮🇳",
+        points: 26905,
+        games: 538,
+        career: "2008-heden",
+        achievement: "World Cup Winner 2023, ICC No.1",
+        color: "#FF9933"
+    },
+    {
+        name: "Jacques Kallis",
+        team: "Zuid-Afrika",
+        sport: "Cricket",
+        sportEmoji: "🏏",
+        country: "Zuid-Afrika",
+        flag: "🇿🇦",
+        points: 25534,
+        games: 519,
+        career: "1995-2014",
+        achievement: "Greatest All-Rounder of All Time",
+        color: "#007749"
+    },
+    {
+        name: "Kumar Sangakkara",
+        team: "Sri Lanka",
+        sport: "Cricket",
+        sportEmoji: "🏏",
+        country: "Sri Lanka",
+        flag: "🇱🇰",
+        points: 28016,
+        games: 594,
+        career: "2000-2015",
+        achievement: "ICC Cricketer of the Year",
+        color: "#0033A0"
+    },
+
+    // FIELD HOCKEY
+    {
+        name: "Teun de Nooijer",
+        team: "Nederland",
+        sport: "Hockey",
+        sportEmoji: "🏑",
+        country: "Nederland",
+        flag: "🇳🇱",
+        points: 217,
+        games: 453,
+        career: "1994-2014",
+        achievement: "2x FIH Player of the Year, Olympic Gold",
+        color: "#FF6600"
+    },
+    {
+        name: "Sohail Abbas",
+        team: "Pakistan",
+        sport: "Hockey",
+        sportEmoji: "🏑",
+        country: "Pakistan",
+        flag: "🇵🇰",
+        points: 348,
+        games: 312,
+        career: "1998-2012",
+        achievement: "All-time leading scorer in field hockey",
+        color: "#006600"
+    },
+    {
+        name: "Jamie Dwyer",
+        team: "Australië",
+        sport: "Hockey",
+        sportEmoji: "🏑",
+        country: "Australië",
+        flag: "🇦🇺",
+        points: 245,
+        games: 365,
+        career: "2001-2016",
+        achievement: "5x FIH Player of the Year",
+        color: "#00843D"
+    },
+
+    // BASKETBALL (WNBA)
+    {
+        name: "Diana Taurasi",
+        team: "Phoenix Mercury",
+        sport: "Basketball",
+        sportEmoji: "🏀",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 10646,
+        games: 570,
+        career: "2004-heden",
+        achievement: "WNBA All-Time Leading Scorer",
+        color: "#CB6015"
+    },
+    {
+        name: "Tina Charles",
+        team: "Connecticut Sun",
+        sport: "Basketball",
+        sportEmoji: "🏀",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 7867,
+        games: 401,
+        career: "2010-heden",
+        achievement: "WNBA MVP, Olympic Gold",
+        color: "#003DA5"
+    },
+
+    // WATER POLO
+    {
+        name: "Tibor Benedek",
+        team: "Hongarije",
+        sport: "Waterpolo",
+        sportEmoji: "🤽",
+        country: "Hongarije",
+        flag: "🇭🇺",
+        points: 527,
+        games: 414,
+        career: "1993-2012",
+        achievement: "3x Olympic Gold Medalist",
+        color: "#436F4D"
+    },
+    {
+        name: "Tony Azevedo",
+        team: "VS",
+        sport: "Waterpolo",
+        sportEmoji: "🤽",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 498,
+        games: 346,
+        career: "2000-2016",
+        achievement: "4x Olympian, NCAA Champion",
+        color: "#0A3161"
+    },
+
+    // LACROSSE
+    {
+        name: "Gary Gait",
+        team: "Canada / Syracuse",
+        sport: "Lacrosse",
+        sportEmoji: "🥍",
+        country: "Canada",
+        flag: "🇨🇦",
+        points: 1168,
+        games: 264,
+        career: "1990-2005",
+        achievement: "Greatest Lacrosse Player Ever",
+        color: "#FF0000"
+    },
+
+    // VOLLEYBALL
+    {
+        name: "Karch Kiraly",
+        team: "VS",
+        sport: "Volleybal",
+        sportEmoji: "🏐",
+        country: "VS",
+        flag: "🇺🇸",
+        points: 2548,
+        games: 311,
+        career: "1981-2007",
+        achievement: "3x Olympic Gold (Indoor & Beach)",
+        color: "#0A3161"
+    },
+    {
+        name: "Giba",
+        team: "Brazilië",
+        sport: "Volleybal",
+        sportEmoji: "🏐",
+        country: "Brazilië",
+        flag: "🇧🇷",
+        points: 2102,
+        games: 279,
+        career: "1995-2014",
+        achievement: "3x World Champion, Olympic Gold",
+        color: "#009C3B"
+    }
+];
+
+// ===== GLOBALS =====
+let currentSport = 'all';
+let currentSearch = '';
+let currentSort = 'points-desc';
+
+// ===== INIT =====
+function init() {
+    generateSportTabs();
+    updateStats();
+    renderTable();
+    setupEventListeners();
+}
+
+function generateSportTabs() {
+    const sports = ['all', ...new Set(players.map(p => p.sport))];
+    const sportEmojis = { all: '🌐' };
+    players.forEach(p => sportEmojis[p.sport] = p.sportEmoji);
+
+    const sportNames = { all: 'Alle Sporten' };
+    sports.forEach(s => { if (s !== 'all') sportNames[s] = s; });
+
+    const container = document.getElementById('sportTabs');
+    container.innerHTML = sports.map(sport => `
+        <button class="sport-tab ${sport === 'all' ? 'active' : ''}" data-sport="${sport}">
+            <span class="emoji">${sportEmojis[sport]}</span>
+            ${sportNames[sport]}
+        </button>
+    `).join('');
+}
+
+function updateStats() {
+    const filtered = getFilteredPlayers();
+    const sports = new Set(filtered.map(p => p.sport));
+    const countries = new Set(filtered.map(p => p.country));
+    const totalPts = filtered.reduce((sum, p) => sum + p.points, 0);
+
+    animateNumber('totalPlayers', filtered.length);
+    animateNumber('totalSports', sports.size);
+    animateNumber('totalPoints', totalPts);
+    animateNumber('totalCountries', countries.size);
+}
+
+function animateNumber(id, target) {
+    const el = document.getElementById(id);
+    const start = parseInt(el.textContent.replace(/\D/g, '')) || 0;
+    const duration = 600;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + (target - start) * eased);
+        el.textContent = current.toLocaleString('nl-NL');
+        if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+}
+
+function getFilteredPlayers() {
+    let result = [...players];
+
+    if (currentSport !== 'all') {
+        result = result.filter(p => p.sport === currentSport);
+    }
+
+    if (currentSearch) {
+        const search = currentSearch.toLowerCase();
+        result = result.filter(p =>
+            p.name.toLowerCase().includes(search) ||
+            p.team.toLowerCase().includes(search) ||
+            p.country.toLowerCase().includes(search) ||
+            p.sport.toLowerCase().includes(search)
+        );
+    }
+
+    // Sort
+    const [field, dir] = currentSort.split('-');
+    result.sort((a, b) => {
+        let valA, valB;
+        if (field === 'name') {
+            valA = a.name.toLowerCase();
+            valB = b.name.toLowerCase();
+            return dir === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        } else if (field === 'avg') {
+            valA = a.points / a.games;
+            valB = b.points / b.games;
+        } else if (field === 'games') {
+            valA = a.games;
+            valB = b.games;
+        } else {
+            valA = a.points;
+            valB = b.points;
+        }
+        return dir === 'desc' ? valB - valA : valA - valB;
+    });
+
+    return result;
+}
+
+function renderTable() {
+    const filtered = getFilteredPlayers();
+    const tbody = document.getElementById('tableBody');
+    const noResults = document.getElementById('noResults');
+    const resultsCount = document.getElementById('resultsCount');
+    const tableTitle = document.getElementById('tableTitle');
+
+    const sportNames = { all: 'Alle Sporten' };
+    players.forEach(p => sportNames[p.sport] = p.sport);
+    tableTitle.textContent = sportNames[currentSport] || 'Alle Sporten';
+
+    resultsCount.textContent = `${filtered.length} speler${filtered.length !== 1 ? 's' : ''}`;
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+    }
+
+    noResults.style.display = 'none';
+
+    tbody.innerHTML = filtered.map((player, index) => {
+        const rank = index + 1;
+        const avg = (player.points / player.games).toFixed(1);
+        const initials = player.name.split(' ').map(n => n[0]).join('').substring(0, 2);
+        const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
+
+        return `
+            <tr onclick="openModal(${players.indexOf(player)})" style="animation-delay: ${index * 0.03}s">
+                <td class="rank-cell">
+                    <span class="rank-badge ${rankClass}">${rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : rank}</span>
+                </td>
+                <td>
+                    <div class="player-cell">
+                        <div class="player-avatar" style="background: ${player.color}">${initials}</div>
+                        <div class="player-info">
+                            <div class="player-name">${player.name}</div>
+                            <div class="player-team">${player.team}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="sport-cell">
+                        <span class="sport-icon-small">${player.sportEmoji}</span>
+                        <span class="sport-name">${player.sport}</span>
+                    </div>
+                </td>
+                <td class="hide-mobile">
+                    <div class="country-cell">
+                        <span class="flag">${player.flag}</span>
+                        <span class="country-name">${player.country}</span>
+                    </div>
+                </td>
+                <td class="points-cell">
+                    <span class="points-highlight">${player.points.toLocaleString('nl-NL')}</span>
+                </td>
+                <td class="games-cell hide-mobile">${player.games.toLocaleString('nl-NL')}</td>
+                <td class="avg-cell hide-mobile">${avg}</td>
+                <td class="career-cell hide-mobile">${player.career}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function openModal(index) {
+    const player = players[index];
+    const avg = (player.points / player.games).toFixed(2);
+    const initials = player.name.split(' ').map(n => n[0]).join('').substring(0, 2);
+
+    document.getElementById('modalAvatar').textContent = initials;
+    document.getElementById('modalAvatar').style.background = player.color;
+    document.getElementById('modalName').textContent = player.name;
+    document.getElementById('modalDetails').textContent = `${player.sportEmoji} ${player.sport} • ${player.flag} ${player.country}`;
+    document.getElementById('modalPoints').textContent = player.points.toLocaleString('nl-NL');
+    document.getElementById('modalGames').textContent = player.games.toLocaleString('nl-NL');
+    document.getElementById('modalAvg').textContent = avg;
+
+    document.getElementById('modalBody').innerHTML = `
+        <div class="modal-info-row">
+            <span class="modal-info-label">Team / Land</span>
+            <span class="modal-info-value">${player.team}</span>
+        </div>
+        <div class="modal-info-row">
+            <span class="modal-info-label">Carrière</span>
+            <span class="modal-info-value">${player.career}</span>
+        </div>
+        <div class="modal-info-row">
+            <span class="modal-info-label">Prestatie</span>
+            <span class="modal-info-value">${player.achievement}</span>
+        </div>
+        <div class="modal-info-row">
+            <span class="modal-info-label">Punten per wedstrijd</span>
+            <span class="modal-info-value" style="color: var(--accent-green)">${avg}</span>
+        </div>
+        <div class="modal-info-row">
+            <span class="modal-info-label">Sport</span>
+            <span class="modal-info-value">${player.sportEmoji} ${player.sport}</span>
+        </div>
+    `;
+
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function setupEventListeners() {
+    // Sport tabs
+    document.getElementById('sportTabs').addEventListener('click', (e) => {
+        const tab = e.target.closest('.sport-tab');
+        if (!tab) return;
+        document.querySelectorAll('.sport-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentSport = tab.dataset.sport;
+        renderTable();
+        updateStats();
+    });
+
+    // Search
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        currentSearch = e.target.value;
+        renderTable();
+        updateStats();
+    });
+
+    // Sort
+    document.getElementById('sortSelect').addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        renderTable();
+    });
+
+    // Modal close on overlay click
+    document.getElementById('modalOverlay').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+    });
+
+    // ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+}
+
+// Start
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
